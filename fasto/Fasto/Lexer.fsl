@@ -66,7 +66,6 @@ let keyword (s, pos) =
        | "and"          -> Parser.AND pos
        | "or"           -> Parser.OR pos
        | "not"          -> Parser.NOT pos
-       | "negate"       -> Parser.NEG pos
        | "false"        -> Parser.FALSE pos
        | "true"         -> Parser.TRUE pos
 
@@ -75,6 +74,7 @@ let keyword (s, pos) =
        | "map"          -> Parser.MAP  pos
        | "reduce"       -> Parser.REDUCE pos
        | "read"         -> Parser.READ pos
+       | "replicate"    -> Parser.REPLICATE pos
        | "write"        -> Parser.WRITE pos
        | _              -> Parser.ID (s, pos)
 

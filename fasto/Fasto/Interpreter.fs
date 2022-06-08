@@ -161,39 +161,35 @@ let rec evalExp (e : UntypedExp, vtab : VarTable, ftab : FunTable) : Value =
             | (_, _) -> reportWrongType "left operand of /" Int res1 (expPos e1)
   | And (e1, e2, pos) ->
         let res1 = evalExp(e1, vtab, ftab)
-        let res2 = evalExp(e2, vtab, ftab)
-        match (res1, res2) with
-            | (BoolVal b1, BoolVal b2) ->
-                  if (res1 = BoolVal false)
-                  then BoolVal false
-                  elif (res1 = BoolVal true && res2 = BoolVal true)
+        match (res1) with
+            | (BoolVal false) -> BoolVal false
+            | (BoolVal true) ->
+                  let res2 = evalExp(e2, vtab, ftab)
+                  if (res2 = BoolVal true)
                   then BoolVal true
                   else BoolVal false
-            | (BoolVal _, _) -> reportWrongType "right operand of &&" Bool res2 (expPos e2)
-            | (_, _) -> reportWrongType "right operand of &&" Bool res1 (expPos e1)
-  | Or (_, _, _) ->
+            | (_) -> reportWrongType "operand of &&" Bool res1 (expPos e1)
+  | Or (e1, e2, pos) ->
         let res1 = evalExp(e1, vtab, ftab)
-        let res2 = evalExp(e2, vtab, ftab)
-        match (res1, res2) with
-            | (BoolVal b1, BoolVal b2) ->
-                  if (res1 = BoolVal false || res2 = BoolVal false)
+        match (res1) with
+            | (BoolVal true) -> BoolVal true
+            | (BoolVal false) ->
+                  let res2 = evalExp(e2, vtab, ftab)
+                  if (res2 = BoolVal false)
                   then BoolVal false
                   else BoolVal true
-            | (BoolVal _, _) -> reportWrongType "right operand of ||" Bool res2 (expPos e2)
-            | (_, _) -> reportWrongType "right operand of ||" Bool res1 (expPos e1)
+            | (_) -> reportWrongType "operand of ||" Bool res1 (expPos e1)
   | Not(e1, pos) -> 
         let res1 = evalExp(e1, vtab, ftab)
         match (res1) with
-            | (BoolVal) -> 
-            if (res1 = BoolVal true)
-            then BoolVal false
-            else BoolVal true
+            | BoolVal true -> BoolVal false
+            | BoolVal false -> BoolVal true
             | (_) -> reportWrongType "operand of not" Bool res1 (expPos e1)
         
   | Negate(e1, pos) ->
         let res1 = evalExp(e1, vtab, ftab)
         match (res1) with
-            | (IntVal n1) -> IntVal -(n1)
+            | (IntVal n1) -> IntVal (-n1)
             | (_) -> reportWrongType "operand of ~" Int res1 (expPos e1)
   | Equal(e1, e2, pos) ->
         let r1 = evalExp(e1, vtab, ftab)
@@ -287,8 +283,16 @@ let rec evalExp (e : UntypedExp, vtab : VarTable, ftab : FunTable) : Value =
          the value of `a`; otherwise raise an error (containing
          a meaningful message).
   *)
-  | Replicate (_, _, _, _) ->
-        failwith "Unimplemented interpretation of replicate"
+  | Replicate (e1, e2, _, pos) ->
+        let n = evalExp(e1, vtab, ftab)
+        let a = evalExp(e2, vtab, ftab)
+        match n with
+            | intVal size ->
+                  if size >= 0
+                  then ArrayVal( List.map (fun x -> a) [0..size-1], valueType a )
+                  else let errMsg = sprintf "Error: Argument n of Replicate is negative: %i" size
+                        raise (MyError(errMsg, pos))
+            | _ -> reportWrongType "Error: Argument of Replicate " Int n pos
 
   (* TODO project task 2: `filter(p, arr)`
        pattern match the implementation of map:

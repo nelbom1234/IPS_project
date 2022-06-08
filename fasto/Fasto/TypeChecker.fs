@@ -140,7 +140,7 @@ and checkExp  (ftab : FunTable)
     | And (e1, e2, pos) ->
         let (t1, e1') = checkExp ftab vtab e1
         let (t2, e2') = checkExp ftab vtab e2
-        match (t1 == Bool && t2 == Bool, t1, t2) with
+        match (t1 = Bool && t2 = Bool, t1, t2) with
           | (false, _, _) -> reportTypesDifferent "input for && " t1 t2 pos
           | (true, Array _, _) -> reportTypeWrongKind "input for && " "bool" t1 pos
           | (true, _, Array _) -> reportTypeWrongKind "input for && " "bool" t2 pos
@@ -149,7 +149,7 @@ and checkExp  (ftab : FunTable)
     | Or (e1, e2, pos) ->
         let (t1, e1') = checkExp ftab vtab e1
         let (t2, e2') = checkExp ftab vtab e2
-        match (t1 == Bool && t2 == Bool, t1, t2) with
+        match (t1 = Bool && t2 = Bool, t1, t2) with
           | (false, _, _) -> reportTypesDifferent "input for || " t1 t2 pos
           | (true, Array _, _) -> reportTypeWrongKind "input for || " "bool" t1 pos
           | (true, _, Array _) -> reportTypeWrongKind "input for || " "bool" t2 pos
@@ -157,17 +157,17 @@ and checkExp  (ftab : FunTable)
 
     | Not (e1, pos) ->
         let (t, e1') = checkExp ftab vtab e1
-        match (t = bool, t) with
+        match (t = Bool, t) with
           | (false, _) -> reportTypeWrongKind "input for ! " "bool" t pos
           | (true, Array _) -> reportTypeWrongKind "input for ! " "bool" t pos
           | (_, _) -> (Bool, Not (e1', pos))
 
     | Negate (e1, pos) ->
         let (t, e1') = checkExp ftab vtab e1
-        match (t = int, t) with
+        match (t = Int, t) with
           | (false, _) -> reportTypeWrongKind "input for ~ " "int" t pos
           | (true, Array _) -> reportTypeWrongKind "input for ~ " "int" t pos
-          | (_, _) -> (int, Negate (e1', pos))
+          | (_, _) -> (Int, Negate (e1', pos))
 
     (* The types for e1, e2 must be the same. The result is always a Bool. *)
     | Equal (e1, e2, pos) ->
@@ -316,8 +316,13 @@ and checkExp  (ftab : FunTable)
         - assuming `a` is of type `t` the result type
           of replicate is `[t]`
     *)
-    | Replicate (_, _, _, _) ->
-        failwith "Unimplemented type check of replicate"
+    | Replicate (n_exp, a_exp, _, pos) ->
+        let (n_type, n_exp_dec) = checkExp ftab vtab n_exp
+        let (a_type, a_exp_dec) = checkExp ftab vtab a_exp
+        if n_type <> Int then
+          reportTypeWrong "first argument of replicate" Int n_type pos
+        
+        (Array a_type, Replicate (n_exp_dec, a_exp_dec, a_type, pos))
 
     (* TODO project task 2: Hint for `filter(f, arr)`
         Look into the type-checking lecture slides for the type rule of `map`

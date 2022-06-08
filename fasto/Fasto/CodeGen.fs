@@ -195,7 +195,7 @@ let rec compileExp  (e      : TypedExp)
         ; Mips.ORI (place, place, n % 65536) ]
   | Constant (BoolVal p, pos) ->
       (* TODO project task 1: represent `true`/`false` values as `1`/`0` *)
-      if p == false then
+      if (p = true) then
           [ Mips.LI (place, 1) ]
       else
           [ Mips.LI (place, 0) ]
@@ -288,7 +288,7 @@ let rec compileExp  (e      : TypedExp)
 
   | Negate (e1, pos) ->
       let t = newReg "negate"
-      let code = compileExp r1 vtable t1
+      let code = compileExp e1 vtable t
       code @ [Mips.SUB (place,RZ,t)]
 
   | Let (dec, e1, pos) ->
@@ -630,8 +630,13 @@ let rec compileExp  (e      : TypedExp)
         If `n` is less than `0` then remember to terminate the program with
         an error -- see implementation of `iota`.
   *)
-  | Replicate (_, _, _, _) ->
-      failwith "Unimplemented code generation of replicate"
+  | Replicate (n_exp, a_exp, a_type, pos) ->
+      let n_reg = newReg "n_reg" (* size of input/output array *)
+      let a_reg = newReg "a_reg"
+      let n_code = compileExp n_exp vtable n_reg
+      let a_code = compileExp a_exp vtable a_reg
+
+      
 
   (* TODO project task 2: see also the comment to replicate.
      (a) `filter(f, arr)`:  has some similarity with the implementation of map.

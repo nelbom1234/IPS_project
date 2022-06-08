@@ -26,12 +26,11 @@ type token =
   | LESS of (Position)
   | TIMES of (Position)
   | DIV of (Position)
-  | NEG of (Position)
-  | NOT of (Position)
   | AND of (Position)
   | OR of (Position)
-  | TRUE of (Position)
-  | FALSE of (Position)
+  | NOT of (Position)
+  | NEG of (Position)
+  | SEMI of (Position)
   | INT of (Position)
   | CHAR of (Position)
   | BOOL of (Position)
@@ -41,6 +40,8 @@ type token =
   | LET of (Position)
   | IN of (Position)
   | EOF of (Position)
+  | TRUE of (Position)
+  | FALSE of (Position)
   | ID of (string * Position)
   | STRINGLIT of (string * Position)
   | CHARLIT of (char * Position)
@@ -71,12 +72,11 @@ type tokenId =
     | TOKEN_LESS
     | TOKEN_TIMES
     | TOKEN_DIV
-    | TOKEN_NEG
-    | TOKEN_NOT
     | TOKEN_AND
     | TOKEN_OR
-    | TOKEN_TRUE
-    | TOKEN_FALSE
+    | TOKEN_NOT
+    | TOKEN_NEG
+    | TOKEN_SEMI
     | TOKEN_INT
     | TOKEN_CHAR
     | TOKEN_BOOL
@@ -86,6 +86,8 @@ type tokenId =
     | TOKEN_LET
     | TOKEN_IN
     | TOKEN_EOF
+    | TOKEN_TRUE
+    | TOKEN_FALSE
     | TOKEN_ID
     | TOKEN_STRINGLIT
     | TOKEN_CHARLIT
@@ -96,6 +98,7 @@ type nonTerminalId =
     | NONTERM__startProg
     | NONTERM_Prog
     | NONTERM_FunDecs
+    | NONTERM_Decs
     | NONTERM_Fun
     | NONTERM_Type
     | NONTERM_Params
