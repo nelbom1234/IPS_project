@@ -287,11 +287,11 @@ let rec evalExp (e : UntypedExp, vtab : VarTable, ftab : FunTable) : Value =
         let n = evalExp(e1, vtab, ftab)
         let a = evalExp(e2, vtab, ftab)
         match n with
-            | intVal size ->
+            | IntVal size ->
                   if size >= 0
                   then ArrayVal( List.map (fun x -> a) [0..size-1], valueType a )
                   else let errMsg = sprintf "Error: Argument n of Replicate is negative: %i" size
-                        raise (MyError(errMsg, pos))
+                       raise (MyError(errMsg, pos))
             | _ -> reportWrongType "Error: Argument of Replicate " Int n pos
 
   (* TODO project task 2: `filter(p, arr)`

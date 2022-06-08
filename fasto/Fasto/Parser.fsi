@@ -13,6 +13,9 @@ type token =
   | SEMICOLON of (Position)
   | READ of (Position)
   | WRITE of (Position)
+  | REPLICATE of (Position)
+  | FILTER of (Position)
+  | SCAN of (Position)
   | DEQ of (Position)
   | LTH of (Position)
   | EQ of (Position)
@@ -59,6 +62,9 @@ type tokenId =
     | TOKEN_SEMICOLON
     | TOKEN_READ
     | TOKEN_WRITE
+    | TOKEN_REPLICATE
+    | TOKEN_FILTER
+    | TOKEN_SCAN
     | TOKEN_DEQ
     | TOKEN_LTH
     | TOKEN_EQ
