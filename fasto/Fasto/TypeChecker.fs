@@ -138,20 +138,36 @@ and checkExp  (ftab : FunTable)
         (Int, Divide (e1_dec, e2_dec, pos))
 
     | And (e1, e2, pos) ->
-        let (e1_dec, e2_dec) = checkBinOp ftab vtab (pos, Bool, e1, e2)
-        (Bool, And (e1_dec, e2_dec, pos))
+        let (t1, e1') = checkExp ftab vtab e1
+        let (t2, e2') = checkExp ftab vtab e2
+        match (t1 == Bool && t2 == Bool, t1, t2) with
+          | (false, _, _) -> reportTypesDifferent "input for && " t1 t2 pos
+          | (true, Array _, _) -> reportTypeWrongKind "input for && " "bool" t1 pos
+          | (true, _, Array _) -> reportTypeWrongKind "input for && " "bool" t2 pos
+          | (_, _, _) -> (Bool, And (e1', e2', pos))
 
     | Or (e1, e2, pos) ->
-        let (e1_dec, e2_dec) = checkBinOp ftab vtab (pos, Bool, e1, e2)
-        (Bool, Or (e1_dec, e2_dec, pos))
+        let (t1, e1') = checkExp ftab vtab e1
+        let (t2, e2') = checkExp ftab vtab e2
+        match (t1 == Bool && t2 == Bool, t1, t2) with
+          | (false, _, _) -> reportTypesDifferent "input for || " t1 t2 pos
+          | (true, Array _, _) -> reportTypeWrongKind "input for || " "bool" t1 pos
+          | (true, _, Array _) -> reportTypeWrongKind "input for || " "bool" t2 pos
+          | (_, _, _) -> (Bool, Or (e1', e2', pos))
 
     | Not (e1, pos) ->
-        let e1_dec = checkExp ftab vtab e1 Bool
-        (Bool, Not(e1_dec, pos))
+        let (t, e1') = checkExp ftab vtab e1
+        match (t = bool, t) with
+          | (false, _) -> reportTypeWrongKind "input for ! " "bool" t pos
+          | (true, Array _) -> reportTypeWrongKind "input for ! " "bool" t pos
+          | (_, _) -> (Bool, Not (e1', pos))
 
     | Negate (e1, pos) ->
-        let e1_dec = checkExp ftab vtab e1 Int
-        (Int, Negate(e1_dec, pos))
+        let (t, e1') = checkExp ftab vtab e1
+        match (t = int, t) with
+          | (false, _) -> reportTypeWrongKind "input for ~ " "int" t pos
+          | (true, Array _) -> reportTypeWrongKind "input for ~ " "int" t pos
+          | (_, _) -> (int, Negate (e1', pos))
 
     (* The types for e1, e2 must be the same. The result is always a Bool. *)
     | Equal (e1, e2, pos) ->

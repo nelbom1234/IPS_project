@@ -63,6 +63,12 @@ let keyword (s, pos) =
        | "fun"          -> Parser.FUN pos
        | "fn"           -> Parser.FN pos
        | "op"           -> Parser.OP pos
+       | "and"          -> Parser.AND pos
+       | "or"           -> Parser.OR pos
+       | "not"          -> Parser.NOT pos
+       | "negate"       -> Parser.NEG pos
+       | "false"        -> Parser.FALSE pos
+       | "true"         -> Parser.TRUE pos
 
 (* specials: *)
        | "iota"         -> Parser.IOTA pos
@@ -119,9 +125,7 @@ rule Token = parse
   | "&&"                  { Parser.AND    (getPos lexbuf) } 
   | "||"                  { Parser.OR     (getPos lexbuf) }
   | '~'                   { Parser.NEG    (getPos lexbuf) }
-  | "not"                 { Parser.NOT    (getPos lexbuf) }
-  | "true"                { Parser.TRUE   (getPos lexbuf) }
-  | "false"               { Parser.FALSE  (getPos lexbuf) }
-  | ';'                   { Parser.SEMICOLON (getPos lexbuf) }   
+  | "!"                   { Parser.NOT    (getPos lexbuf) }
+  | ';'                   { Parser.SEMI   (getPos lexbuf) }   
   | eof                   { Parser.EOF    (getPos lexbuf) }
   | _                     { lexerError lexbuf "Illegal symbol in input" }
