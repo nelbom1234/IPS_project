@@ -41,14 +41,19 @@ let parse_error_rich =
 %token <string * Position> ID STRINGLIT
 %token <Position> IF THEN ELSE LET IN EOF
 %token <Position> INT CHAR BOOL
-%token <Position> PLUS MINUS LESS
+%token <Position> PLUS MINUS LESS TIMES DIV NEG NOT AND OR TRUE FALSE
 %token <Position> DEQ LTH EQ OP MAP REDUCE IOTA ARROW
 %token <Position> FUN FN COMMA SEMICOLON READ WRITE
 %token <Position> LPAR RPAR LBRACKET RBRACKET LCURLY RCURLY
 
 %nonassoc ifprec letprec
+%left OR
+%left AND
 %left DEQ LTH
 %left PLUS MINUS
+%left TIMES DIV
+%left NOT
+%left NEQ
 
 %start Prog
 %type <AbSyn.UntypedProg> Prog

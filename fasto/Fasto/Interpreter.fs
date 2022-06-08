@@ -144,12 +144,31 @@ let rec evalExp (e : UntypedExp, vtab : VarTable, ftab : FunTable) : Value =
         e.g., `And (e1, e2, pos)` should not evaluate `e2` if `e1` already
               evaluates to false.
   *)
-  | Times(_, _, _) ->
-        failwith "Unimplemented interpretation of multiplication"
-  | Divide(_, _, _) ->
-        failwith "Unimplemented interpretation of division"
-  | And (_, _, _) ->
-        failwith "Unimplemented interpretation of &&"
+  | Times(e1, e2, pos) ->
+        let res1 = evalExp(e1, vtab, ftab)
+        let res2 = evalExp(e2, vtab, ftab)
+        match (res1, res2) with
+            | (IntVal n1, IntVal n2) -> IntVal (n1*n2)
+            | (IntVal _, _) -> reportWrongType "right operand of *" Int res2 (expPos e2)
+            | (_, _) -> reportWrongType "left operand of *" Int res1 (expPos e1)
+  | Divide(e1, e2, pos) ->
+        let res1 = evalExp(e1, vtab, ftab)
+        let res2 = evalExp(e2, vtab, ftab)
+        match (res1, res2) with
+            | (IntVal n1, 0) -> failwith "Not allowed divide by 0"
+            | (IntVal n1, IntVal n2) -> IntVal (n1/n2)
+            | (IntVal _, _) -> reportWrongType "right operand of /" Int res2 (expPos e2)
+            | (_, _) -> reportWrongType "left operand of /" Int res1 (expPos e1)
+  | And (e1, e2, pos) ->
+        let res1 = evalExp(e1, vtab, ftab)
+        let res2 = evalExp(e2, vtab, ftab)
+        match (res1, res2) with
+            | (BoolVal b1, BoolVal b2) ->
+                  if BoolVal b1 = false || BoolVal b2
+                  then return false
+                  else return true
+            | (BoolVal _, _) -> reportWrongType "right operand of &&" Bool res2 (expPos e2)
+            | (_, _) -> reportWrongType "right operand of &&" Bool res1 (expPos e1)
   | Or (_, _, _) ->
         failwith "Unimplemented interpretation of ||"
   | Not(_, _) ->
