@@ -119,9 +119,9 @@ rule Token = parse
   | "&&"                  { Parser.AND    (getPos lexbuf) } 
   | "||"                  { Parser.OR     (getPos lexbuf) }
   | '~'                   { Parser.NEG    (getPos lexbuf) }
-  | "not"                   { Parser.NOT    (getPos lexbuf) }
-  | "true"                  { Parser.TRUE   (getPos lexbuf) }
-  | "false"                { Parser.FALSE  (getPos lexbuf) }
+  | "not"                 { Parser.NOT    (getPos lexbuf) }
+  | "true"                { Parser.TRUE   (getPos lexbuf) }
+  | "false"               { Parser.FALSE  (getPos lexbuf) }
   | ';'                   { Parser.SEMICOLON (getPos lexbuf) }   
   | eof                   { Parser.EOF    (getPos lexbuf) }
   | _                     { lexerError lexbuf "Illegal symbol in input" }

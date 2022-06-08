@@ -4,16 +4,16 @@
     <RestoreSuccess Condition=" '$(RestoreSuccess)' == '' ">True</RestoreSuccess>
     <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
     <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
-    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">/Users/riisberg/.nuget/packages/</NuGetPackageRoot>
-    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">/Users/riisberg/.nuget/packages/</NuGetPackageFolders>
+    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">/Users/christianriisberg/.nuget/packages/</NuGetPackageRoot>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">/Users/christianriisberg/.nuget/packages/</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
-    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.1.0</NuGetToolVersion>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.2.0</NuGetToolVersion>
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <SourceRoot Include="/Users/riisberg/.nuget/packages/" />
+    <SourceRoot Include="/Users/christianriisberg/.nuget/packages/" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">/Users/riisberg/.nuget/packages/fsharp.core/6.0.2</PkgFSharp_Core>
-    <PkgFsLexYacc Condition=" '$(PkgFsLexYacc)' == '' ">/Users/riisberg/.nuget/packages/fslexyacc/10.2.0</PkgFsLexYacc>
+    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">/Users/christianriisberg/.nuget/packages/fsharp.core/6.0.4</PkgFSharp_Core>
+    <PkgFsLexYacc Condition=" '$(PkgFsLexYacc)' == '' ">/Users/christianriisberg/.nuget/packages/fslexyacc/10.2.0</PkgFsLexYacc>
   </PropertyGroup>
 </Project>

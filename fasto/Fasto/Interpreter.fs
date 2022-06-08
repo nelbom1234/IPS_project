@@ -164,17 +164,37 @@ let rec evalExp (e : UntypedExp, vtab : VarTable, ftab : FunTable) : Value =
         let res2 = evalExp(e2, vtab, ftab)
         match (res1, res2) with
             | (BoolVal b1, BoolVal b2) ->
-                  if (res1 = BoolVal false || res2 = BoolVal false)
+                  if (res1 = BoolVal false)
                   then BoolVal false
-                  else BoolVal true
+                  elif (res1 = BoolVal true && res2 = BoolVal true)
+                  then BoolVal true
+                  else BoolVal false
             | (BoolVal _, _) -> reportWrongType "right operand of &&" Bool res2 (expPos e2)
             | (_, _) -> reportWrongType "right operand of &&" Bool res1 (expPos e1)
   | Or (_, _, _) ->
-        failwith "Unimplemented interpretation of ||"
-  | Not(_, _) ->
-        failwith "Unimplemented interpretation of not"
-  | Negate(_, _) ->
-        failwith "Unimplemented interpretation of negate"
+        let res1 = evalExp(e1, vtab, ftab)
+        let res2 = evalExp(e2, vtab, ftab)
+        match (res1, res2) with
+            | (BoolVal b1, BoolVal b2) ->
+                  if (res1 = BoolVal false || res2 = BoolVal false)
+                  then BoolVal false
+                  else BoolVal true
+            | (BoolVal _, _) -> reportWrongType "right operand of ||" Bool res2 (expPos e2)
+            | (_, _) -> reportWrongType "right operand of ||" Bool res1 (expPos e1)
+  | Not(e1, pos) -> 
+        let res1 = evalExp(e1, vtab, ftab)
+        match (res1) with
+            | (BoolVal) -> 
+            if (res1 = BoolVal true)
+            then BoolVal false
+            else BoolVal true
+            | (_) -> reportWrongType "operand of not" Bool res1 (expPos e1)
+        
+  | Negate(e1, pos) ->
+        let res1 = evalExp(e1, vtab, ftab)
+        match (res1) with
+            | (IntVal n1) -> IntVal -(n1)
+            | (_) -> reportWrongType "operand of ~" Int res1 (expPos e1)
   | Equal(e1, e2, pos) ->
         let r1 = evalExp(e1, vtab, ftab)
         let r2 = evalExp(e2, vtab, ftab)

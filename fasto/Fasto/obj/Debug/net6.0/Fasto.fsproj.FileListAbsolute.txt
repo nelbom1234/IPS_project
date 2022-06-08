@@ -26,3 +26,5 @@
 /Users/riisberg/Desktop/IPS_project/fasto/Fasto/obj/Debug/net6.0/Fasto.dll
 /Users/riisberg/Desktop/IPS_project/fasto/Fasto/obj/Debug/net6.0/Fasto.pdb
 /Users/riisberg/Desktop/IPS_project/fasto/Fasto/obj/Debug/net6.0/Fasto.genruntimeconfig.cache
+/Users/christianriisberg/Desktop/IPS_project/fasto/Fasto/obj/Debug/net6.0/Fasto.dll
+/Users/christianriisberg/Desktop/IPS_project/fasto/Fasto/obj/Debug/net6.0/Fasto.pdb
