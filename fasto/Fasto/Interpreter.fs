@@ -155,7 +155,7 @@ let rec evalExp (e : UntypedExp, vtab : VarTable, ftab : FunTable) : Value =
         let res1 = evalExp(e1, vtab, ftab)
         let res2 = evalExp(e2, vtab, ftab)
         match (res1, res2) with
-            | (IntVal n1, 0) -> failwith "Not allowed divide by 0"
+            | (IntVal n1, IntVal 0) -> failwith "Not allowed divide by 0"
             | (IntVal n1, IntVal n2) -> IntVal (n1/n2)
             | (IntVal _, _) -> reportWrongType "right operand of /" Int res2 (expPos e2)
             | (_, _) -> reportWrongType "left operand of /" Int res1 (expPos e1)
@@ -164,9 +164,9 @@ let rec evalExp (e : UntypedExp, vtab : VarTable, ftab : FunTable) : Value =
         let res2 = evalExp(e2, vtab, ftab)
         match (res1, res2) with
             | (BoolVal b1, BoolVal b2) ->
-                  if BoolVal b1 = false || BoolVal b2
-                  then return false
-                  else return true
+                  if (res1 = BoolVal false || res2 = BoolVal false)
+                  then BoolVal false
+                  else BoolVal true
             | (BoolVal _, _) -> reportWrongType "right operand of &&" Bool res2 (expPos e2)
             | (_, _) -> reportWrongType "right operand of &&" Bool res1 (expPos e1)
   | Or (_, _, _) ->

@@ -1,26 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "/Users/christianriisberg/Desktop/IPS_project/fasto/Fasto/Fasto.fsproj": {}
+    "/Users/riisberg/Desktop/IPS_project/fasto/Fasto/Fasto.fsproj": {}
   },
   "projects": {
-    "/Users/christianriisberg/Desktop/IPS_project/fasto/Fasto/Fasto.fsproj": {
+    "/Users/riisberg/Desktop/IPS_project/fasto/Fasto/Fasto.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/christianriisberg/Desktop/IPS_project/fasto/Fasto/Fasto.fsproj",
+        "projectUniqueName": "/Users/riisberg/Desktop/IPS_project/fasto/Fasto/Fasto.fsproj",
         "projectName": "Fasto",
-        "projectPath": "/Users/christianriisberg/Desktop/IPS_project/fasto/Fasto/Fasto.fsproj",
-        "packagesPath": "/Users/christianriisberg/.nuget/packages/",
-        "outputPath": "/Users/christianriisberg/Desktop/IPS_project/fasto/Fasto/obj/",
+        "projectPath": "/Users/riisberg/Desktop/IPS_project/fasto/Fasto/Fasto.fsproj",
+        "packagesPath": "/Users/riisberg/.nuget/packages/",
+        "outputPath": "/Users/riisberg/Desktop/IPS_project/fasto/Fasto/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/christianriisberg/.nuget/NuGet/NuGet.Config"
+          "/Users/riisberg/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/sdk/6.0.300/FSharp/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,7 +36,7 @@
             "FSharp.Core": {
               "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
               "target": "Package",
-              "version": "[6.0.4, )",
+              "version": "[6.0.2, )",
               "generatePathProperty": true
             },
             "FsLexYacc": {
@@ -61,7 +60,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.300/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.202/RuntimeIdentifierGraph.json"
         }
       }
     }
