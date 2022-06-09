@@ -302,16 +302,31 @@ let rec evalExp (e : UntypedExp, vtab : VarTable, ftab : FunTable) : Value =
          under predicate `p`, i.e., `p(a) = true`;
        - create an `ArrayVal` from the (list) result of the previous step.
   *)
-  | Filter (_, _, _, _) ->
-        failwith "Unimplemented interpretation of filter"
-
+  | Filter (farg, arrexp, _, pos) ->
+        let farg_ret_type = rtpFunArg farg ftab pos
+        if (farg_ret_type <> Bool) then failwith "return type of farg not bool in Filter"
+        else
+            let arr  = evalExp(arrexp, vtab, ftab) 
+            match arr with
+                  | ArrayVal (lst, tp) ->
+                        let flst = List.filter(fun x -> match evalFunArg (farg, vtab, ftab, pos, [x]) with
+                                                            | BoolVal b -> b
+                                                            | _ -> failwith "wrong type") lst
+                        ArrayVal (flst, tp)
+                  | otherwise -> reportNonArray "2nd argument of \"filter\"" arr pos
   (* TODO project task 2: `scan(f, ne, arr)`
      Implementation similar to reduce, except that it produces an array
      of the same type and length to the input array `arr`.
   *)
-  | Scan (_, _, _, _, _) ->
-        failwith "Unimplemented interpretation of scan"
-
+  | Scan (farg, ne, arrexp, tp, pos) -> 
+        let arr  = evalExp(arrexp, vtab, ftab)
+        let nel  = evalExp(ne, vtab, ftab)
+        match arr with
+          | ArrayVal (lst,tp1) ->
+               let reslst = List.scan (fun acc x -> evalFunArg (farg, vtab, ftab, pos, [acc;x])) nel lst
+               //List.scan adds 0 as the initial state, which we do not want, so take the tail
+               ArrayVal (reslst.Tail, tp1)
+          | otherwise -> reportNonArray "3rd argument of \"scan\"" arr pos
   | Read (t,p) ->
         let str = Console.ReadLine()
         match t with
