@@ -56,7 +56,7 @@ let parse_error_rich =
 %left SEMI
 %left PLUS MINUS
 %left TIMES DIV
-%left NEQ
+%left NEG
 %left NOT
 
 %start Prog

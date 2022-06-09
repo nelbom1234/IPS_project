@@ -28,33 +28,46 @@ let rec copyConstPropFoldExp (vtable : VarTable)
                 exists and if so, it should replace the current expression
                 with the variable or constant to be propagated.
             *)
-            failwith "Unimplemented copyConstPropFold for Var"
+            match SymTab.lookup name vtable with
+                | Some (ConstProp v) -> Constant(v, pos)
+                | Some (VarProp y)   -> Var(y, pos)
+                | None               -> Var(name, pos)
+
         | Index (name, e, t, pos) ->
             (* TODO project task 3:
                 Should probably do the same as the `Var` case, for
                 the array name, and optimize the index expression `e` as well.
             *)
-            failwith "Unimplemented copyConstPropFold for Index"
+            let e' = copyConstPropFoldExp vtable e
+            match SymTab.lookup name vtable with
+                | Some (ConstProp v) -> Constant(v, pos)
+                | Some (VarProp y)   -> Var(y, pos)
+                | None               -> Index(name, e', t, pos)
+                
         | Let (Dec (name, e, decpos), body, pos) ->
             let e' = copyConstPropFoldExp vtable e
             match e' with
-                | Var (_, _) ->
+                | Var (a, _) ->
                     (* TODO project task 3:
                         Hint: I have discovered a variable-copy statement `let x = a`.
                               I should probably record it in the `vtable` by
                               associating `x` with a variable-propagatee binding,
                               and optimize the `body` of the let.
                     *)
-                    failwith "Unimplemented copyConstPropFold for Let with Var"
-                | Constant (_, _) ->
+                    let tmptable : VarTable = (SymTab.bind name (VarProp a) (vtable))
+                    let body' = copyConstPropFoldExp tmptable body
+                    Let (Dec (name, e', decpos), body', pos)
+                | Constant (v, _) ->
                     (* TODO project task 3:
                         Hint: I have discovered a constant-copy statement `let x = 5`.
                               I should probably record it in the `vtable` by
                               associating `x` with a constant-propagatee binding,
                               and optimize the `body` of the let.
                     *)
-                    failwith "Unimplemented copyConstPropFold for Let with Constant"
-                | Let (_, _, _) ->
+                    let tmptable : VarTable = (SymTab.bind name (ConstProp v) (vtable))
+                    let body' = copyConstPropFoldExp tmptable body
+                    Let (Dec (name, e', decpos), body', pos)
+                | Let (Dec (y, e1, posy), e2, posx) ->
                     (* TODO project task 3:
                         Hint: this has the structure
                                 `let y = (let x = e1 in e2) in e3`
@@ -66,7 +79,8 @@ let rec copyConstPropFoldExp (vtable : VarTable)
                         restructured, semantically-equivalent expression:
                                 `let x = e1 in let y = e2 in e3`
                     *)
-                    failwith "Unimplemented copyConstPropFold for Let with Let"
+                    let tmp = Let (Dec (name, e1, posy), Let (Dec (y, e2, posx), body, pos), decpos)
+                    copyConstPropFoldExp vtable tmp
                 | _ -> (* Fallthrough - for everything else, do nothing *)
                     let body' = copyConstPropFoldExp vtable body
                     Let (Dec (name, e', decpos), body', pos)
@@ -96,8 +110,8 @@ let rec copyConstPropFoldExp (vtable : VarTable)
             match (e1', e2') with
                 | (Constant (BoolVal a, _), Constant (BoolVal b, _)) ->
                     Constant (BoolVal (a && b), pos)
-                | (Constant (BoolVal false, _), _) -> Constant (BoolVal false, _)
-                | (Constant (BoolVal false, _), _) -> Constant (BoolVal false, _)
+                | (Constant (BoolVal false, _), _) -> Constant (BoolVal false, pos)
+                | (_, Constant (BoolVal false, _)) -> Constant (BoolVal false, pos)
                 | _ -> And (e1', e2', pos)
         | Constant (x,pos) -> Constant (x,pos)
         | StringLit (x,pos) -> StringLit (x,pos)

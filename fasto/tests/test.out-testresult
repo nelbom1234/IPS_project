@@ -1,0 +1,5 @@
+Unhandled exception. System.Exception: Invalid file name or empty file
+   at Fasto.parseFastoFile(String filename) in /home/nelbom1234/Documents/IPS/project/IPS_project/fasto/Fasto/Fasto.fsx:line 147
+   at Fasto.compile(String filename, FSharpFunc`2 optimiser) in /home/nelbom1234/Documents/IPS/project/IPS_project/fasto/Fasto/Fasto.fsx:line 150
+   at Fasto.main(String[] paramList) in /home/nelbom1234/Documents/IPS/project/IPS_project/fasto/Fasto/Fasto.fsx:line 212
+bin/../bin/fasto.sh: line 18: 218892 Aborted                 (core dumped) dotnet $FASTO "$@"

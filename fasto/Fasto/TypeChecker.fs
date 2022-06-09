@@ -165,9 +165,9 @@ and checkExp  (ftab : FunTable)
     | Negate (e1, pos) ->
         let (t, e1') = checkExp ftab vtab e1
         match (t = Int, t) with
-          | (false, _) -> reportTypeWrongKind "input for ~ " "int" t pos
-          | (true, Array _) -> reportTypeWrongKind "input for ~ " "int" t pos
-          | (_, _) -> (Int, Negate (e1', pos))
+          | (false, _) -> reportTypeWrongKind "input for ~ " "bool" t pos
+          | (true, Array _) -> reportTypeWrongKind "input for ~ " "bool" t pos
+          | (_,_) -> (Int, Negate (e1', pos))
 
     (* The types for e1, e2 must be the same. The result is always a Bool. *)
     | Equal (e1, e2, pos) ->
@@ -367,7 +367,7 @@ and checkExp  (ftab : FunTable)
                   if a1 <> a2 then
                      reportTypesDifferent "argument types of operation in scan"
                                           a1 a2 pos
-                  if res <> Array a1 then
+                  if res <> a1 then
                      reportTypesDifferent "argument and return type of operation in scan"
                                           a1 res pos
                   (f', res)
@@ -379,7 +379,7 @@ and checkExp  (ftab : FunTable)
         if e_type <> f_argres_type then
           reportTypesDifferent "operation and start-element types in scan"
                                f_argres_type e_type pos
-        (f_argres_type, Scan (f', e_dec, arr_dec, elem_type, pos))
+        (f_argres_type, Scan (f', e_dec, arr_dec, arr_type, pos))
         
 
 and checkFunArg  (ftab : FunTable)

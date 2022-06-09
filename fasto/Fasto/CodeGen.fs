@@ -278,7 +278,7 @@ let rec compileExp  (e      : TypedExp)
       let t2 = newReg "divide_R"
       let code1 = compileExp e1 vtable t1
       let code2 = compileExp e2 vtable t2
-      code1 @ code2 @ [Mips.MUL (place,t1,t2)]
+      code1 @ code2 @ [Mips.DIV (place,t1,t2)]
 
   | Not (e1, pos) ->
       let t = newReg "not"
