@@ -1,0 +1,4 @@
+fun int main() =
+    let tmp = write(!true) in
+    let tmp = write(!false) in
+    0

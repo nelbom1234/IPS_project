@@ -1,0 +1,6 @@
+fun int main () =
+    let tmp = write(false || false) in
+    let tmp = write(true || false) in
+    let tmp = write(false || true) in
+    let tmp = write(true || true) in
+    0

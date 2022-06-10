@@ -274,11 +274,14 @@ let rec compileExp  (e      : TypedExp)
       code1 @ code2 @ [Mips.MUL (place,t1,t2)]
 
   | Divide (e1, e2, pos) ->
-      let t1 = newReg "divide_L"
-      let t2 = newReg "divide_R"
-      let code1 = compileExp e1 vtable t1
-      let code2 = compileExp e2 vtable t2
-      code1 @ code2 @ [Mips.DIV (place,t1,t2)]
+      match e2 with
+        | Constant(IntVal 0, _) -> raise(MyError("Tried to divide by 0", pos))
+        | otherwise ->
+            let t1 = newReg "divide_L"
+            let t2 = newReg "divide_R"
+            let code1 = compileExp e1 vtable t1
+            let code2 = compileExp e2 vtable t2
+            code1 @ code2 @ [Mips.DIV (place,t1,t2)]
 
   | Not (e1, pos) ->
       let t = newReg "not"
@@ -423,7 +426,7 @@ let rec compileExp  (e      : TypedExp)
       let t1 = newReg "or_L"
       let t2 = newReg "or_R"
       let code1 = compileExp e1 vtable t1
-      let code2 = compileExp e1 vtable t2
+      let code2 = compileExp e2 vtable t2
       let falseLabel = newLab "false"
       code1 @
       [Mips.LI (place, 1)
@@ -797,7 +800,7 @@ let rec compileExp  (e      : TypedExp)
         @ init_regs
         @ loop_header
         @ loop_scan
-        @loop_footer
+        @ loop_footer
 
 and applyFunArg ( ff     : TypedFunArg
                 , args   : Mips.reg list

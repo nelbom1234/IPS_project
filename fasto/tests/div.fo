@@ -1,0 +1,6 @@
+fun int main () =
+    let tmp = write(4/2) in
+    let tmp = write(5/3) in
+    let tmp = write(~2/2) in
+    let tmp = write(4/~2) in
+    0

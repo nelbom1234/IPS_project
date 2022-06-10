@@ -17,75 +17,18 @@
 _stop_:
 	ori	$2, $0, 10
 	syscall
-# Function no_way
-no_way:
-	sw	$31, -4($29)
-	addi	$29, $29, -8
-	jal	no_way
-# was:	jal	no_way, 
-# 	ori	_no_wayres_1_,$2,0
-# 	ori	$2,_no_wayres_1_,0
-	addi	$29, $29, 8
-	lw	$31, -4($29)
-	jr	$31
 # Function main
 main:
 	sw	$31, -4($29)
-	sw	$16, -8($29)
-	addi	$29, $29, -12
-	ori	$3, $0, 0
-# was:	ori	_and_L_5_, $0, 0
-	ori	$16, $0, 0
-# was:	ori	_tmp_4_, $0, 0
-	beq	$16, $3, _false_7_
-# was:	beq	_tmp_4_, _and_L_5_, _false_7_
-	jal	no_way
-# was:	jal	no_way, 
-# 	ori	_and_R_6_,$2,0
-	beq	$16, $2, _false_7_
-# was:	beq	_tmp_4_, _and_R_6_, _false_7_
-	ori	$16, $0, 1
-# was:	ori	_tmp_4_, $0, 1
-_false_7_:
-# 	ori	_letBind_3_,_tmp_4_,0
-	la	$2, _true
-# was:	la	$2, _true
-	bne	$16, $0, _wBoolF_8_
-# was:	bne	_letBind_3_, $0, _wBoolF_8_
-	la	$2, _false
-# was:	la	$2, _false
-_wBoolF_8_:
-	jal	putstring
-# was:	jal	putstring, $2
-	ori	$3, $0, 1
-# was:	ori	_or_L_11_, $0, 1
-	ori	$16, $0, 1
-# was:	ori	_tmp_10_, $0, 1
-	beq	$16, $3, _false_13_
-# was:	beq	_tmp_10_, _or_L_11_, _false_13_
-	jal	no_way
-# was:	jal	no_way, 
-# 	ori	_or_R_12_,$2,0
-	beq	$16, $2, _false_13_
-# was:	beq	_tmp_10_, _or_R_12_, _false_13_
-	ori	$16, $0, 0
-# was:	ori	_tmp_10_, $0, 0
-_false_13_:
-# 	ori	_letBind_9_,_tmp_10_,0
-	la	$2, _true
-# was:	la	$2, _true
-	bne	$16, $0, _wBoolF_14_
-# was:	bne	_letBind_9_, $0, _wBoolF_14_
-	la	$2, _false
-# was:	la	$2, _false
-_wBoolF_14_:
-	jal	putstring
-# was:	jal	putstring, $2
-	ori	$2, $0, 1
-# was:	ori	_mainres_2_, $0, 1
-# 	ori	$2,_mainres_2_,0
-	addi	$29, $29, 12
-	lw	$16, -8($29)
+	addi	$29, $29, -8
+	ori	$0, $0, 3
+# was:	ori	_letBind_3_, $0, 3
+	ori	$0, $0, 5
+# was:	ori	_letBind_2_, $0, 5
+	ori	$2, $0, 7
+# was:	ori	_mainres_1_, $0, 7
+# 	ori	$2,_mainres_1_,0
+	addi	$29, $29, 8
 	lw	$31, -4($29)
 	jr	$31
 ord:

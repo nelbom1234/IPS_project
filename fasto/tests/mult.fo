@@ -1,0 +1,6 @@
+fun int main () =
+    let tmp = write(4*2) in
+    let tmp = write(3*1) in
+    let tmp = write(~2*5) in
+    let tmp = write(7*~1) in
+    0
